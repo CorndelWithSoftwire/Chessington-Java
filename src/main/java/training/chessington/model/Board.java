@@ -41,9 +41,15 @@ public class Board {
         return board[coords.getRow()][coords.getCol()];
     }
 
+    public boolean inRange(Coordinates coordinates) {
+        return coordinates.getCol() < 8 && coordinates.getCol() >= 0 && coordinates.getRow() < 8 && coordinates.getRow() >= 0;
+    }
+
     public void move(Coordinates from, Coordinates to) {
-        board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
+        Piece piece = board[from.getRow()][from.getCol()];
+        board[to.getRow()][to.getCol()] = piece;
         board[from.getRow()][from.getCol()] = null;
+        piece.setMoved();
     }
 
     public void placePiece(Coordinates coords, Piece piece) {

@@ -56,7 +56,7 @@ public class Game {
         }
 
         board.move(from, to);
-        nextPlayer = nextPlayer == PlayerColour.WHITE ? PlayerColour.BLACK : PlayerColour.WHITE;
+        nextPlayer = nextPlayer.getOpposite();
     }
 
     public boolean isEnded() {
