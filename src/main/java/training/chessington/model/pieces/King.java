@@ -15,6 +15,32 @@ public class King extends AbstractPiece {
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-        return new ArrayList<>();
+        List<Move> moves = new ArrayList<>();
+
+        for (int rowDiff = -1; rowDiff <= 1; rowDiff++) {
+            for (int colDiff = -1; colDiff <= 1; colDiff++) {
+                if (colDiff == 0 && rowDiff == 0) {
+                    continue;
+                }
+
+                Coordinates to = from.plus(rowDiff, colDiff);
+
+                if (!board.inRange(to)) {
+                    continue;
+                }
+
+                if (containsFriendlyPiece(to, board)) {
+                    continue;
+                }
+
+                moves.add(new Move(from, to));
+            }
+        }
+
+        return moves;
+    }
+
+    private boolean containsFriendlyPiece(Coordinates to, Board board) {
+        return board.get(to) != null && board.get(to).getColour() == colour;
     }
 }
