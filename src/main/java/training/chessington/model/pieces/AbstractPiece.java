@@ -1,10 +1,12 @@
 package training.chessington.model.pieces;
 
+import training.chessington.model.Board;
+import training.chessington.model.Coordinates;
 import training.chessington.model.PlayerColour;
 
 public abstract class AbstractPiece implements Piece {
 
-    protected final Piece.PieceType type;
+    private final Piece.PieceType type;
     protected final PlayerColour colour;
     protected boolean moved = false;
 
@@ -31,5 +33,13 @@ public abstract class AbstractPiece implements Piece {
     @Override
     public String toString() {
         return colour.toString() + " " + type.toString();
+    }
+
+    protected boolean containsFriendlyPiece(Coordinates to, Board board) {
+        return board.hasPieceOfColourAt(to, colour);
+    }
+
+    protected boolean containsOpposingPiece(Coordinates target, Board board) {
+        return board.hasPieceOfColourAt(target, colour.getOpposite());
     }
 }

@@ -31,7 +31,7 @@ public class Pawn extends AbstractPiece {
         );
 
         for (Coordinates diagonal : diagonals) {
-            if (board.inRange(diagonal) && containsEnemy(diagonal, board)) {
+            if (board.inRange(diagonal) && containsOpposingPiece(diagonal, board)) {
                 moves.add(new Move(from, diagonal));
             }
         }
@@ -56,9 +56,5 @@ public class Pawn extends AbstractPiece {
 
     private boolean squareOccupied(Coordinates target, Board board) {
         return board.get(target) != null;
-    }
-
-    private boolean containsEnemy(Coordinates target, Board board) {
-        return board.hasPieceOfColourAt(target, colour.getOpposite());
     }
 }
