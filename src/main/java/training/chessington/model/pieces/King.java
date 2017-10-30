@@ -41,6 +41,6 @@ public class King extends AbstractPiece {
     }
 
     private boolean containsFriendlyPiece(Coordinates to, Board board) {
-        return board.get(to) != null && board.get(to).getColour() == colour;
+        return board.hasPieceOfColourAt(to, colour);
     }
 }

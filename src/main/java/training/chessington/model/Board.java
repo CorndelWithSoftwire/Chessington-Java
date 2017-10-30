@@ -45,6 +45,10 @@ public class Board {
         return coordinates.getCol() < 8 && coordinates.getCol() >= 0 && coordinates.getRow() < 8 && coordinates.getRow() >= 0;
     }
 
+    public boolean hasPieceOfColourAt(Coordinates coords, PlayerColour colour) {
+        return get(coords) != null && get(coords).getColour() == colour;
+    }
+
     public void move(Coordinates from, Coordinates to) {
         Piece piece = board[from.getRow()][from.getCol()];
         board[to.getRow()][to.getCol()] = piece;

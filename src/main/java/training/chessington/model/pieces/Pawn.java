@@ -36,7 +36,7 @@ public class Pawn extends AbstractPiece {
             }
         }
 
-        if (squareBlocked(oneAhead, board)) {
+        if (squareOccupied(oneAhead, board)) {
             return moves;
         }
         moves.add(new Move(from, oneAhead));
@@ -46,7 +46,7 @@ public class Pawn extends AbstractPiece {
         }
 
         Coordinates twoAhead = from.plus(rowStep * 2, 0);
-        if (squareBlocked(twoAhead, board)) {
+        if (squareOccupied(twoAhead, board)) {
             return moves;
         }
 
@@ -54,12 +54,11 @@ public class Pawn extends AbstractPiece {
         return moves;
     }
 
-    private boolean squareBlocked(Coordinates target, Board board) {
+    private boolean squareOccupied(Coordinates target, Board board) {
         return board.get(target) != null;
     }
 
     private boolean containsEnemy(Coordinates target, Board board) {
-        Piece targetPiece = board.get(target);
-        return targetPiece != null && targetPiece.getColour() == colour.getOpposite();
+        return board.hasPieceOfColourAt(target, colour.getOpposite());
     }
 }
