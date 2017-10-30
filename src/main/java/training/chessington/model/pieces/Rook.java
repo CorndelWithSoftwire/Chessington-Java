@@ -6,9 +6,7 @@ import training.chessington.model.Move;
 import training.chessington.model.PlayerColour;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Rook extends AbstractPiece {
     public Rook(PlayerColour colour) {
@@ -17,11 +15,6 @@ public class Rook extends AbstractPiece {
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-        Stream<Coordinates> leftMoves = getMovesInDirection(from, c -> c.plus(0, -1), board);
-        Stream<Coordinates> rightMoves = getMovesInDirection(from, c -> c.plus(0, 1), board);
-        Stream<Coordinates> upMoves = getMovesInDirection(from, c -> c.plus(-1, 0), board);
-        Stream<Coordinates> downMoves = getMovesInDirection(from, c -> c.plus(1, 0), board);
-
-        return Stream.of(leftMoves, rightMoves, upMoves, downMoves).flatMap(s -> s).map(c -> new Move(from, c)).collect(Collectors.toList());
+        return getLateralMoves(from, board).collect(Collectors.toList());
     }
 }
