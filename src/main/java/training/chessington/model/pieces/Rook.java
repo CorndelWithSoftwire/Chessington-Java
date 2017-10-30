@@ -24,20 +24,4 @@ public class Rook extends AbstractPiece {
 
         return Stream.of(leftMoves, rightMoves, upMoves, downMoves).flatMap(s -> s).map(c -> new Move(from, c)).collect(Collectors.toList());
     }
-
-    private Stream<Coordinates> getMovesInDirection(Coordinates origin, Function<Coordinates, Coordinates> nextCoord, Board board) {
-        Coordinates thisCoordinate = nextCoord.apply(origin);
-
-        if (!board.inRange(thisCoordinate) || containsFriendlyPiece(thisCoordinate, board)) {
-            return Stream.empty();
-        }
-
-        if (containsOpposingPiece(thisCoordinate, board)) {
-            return Stream.of(thisCoordinate);
-        }
-
-        Stream<Coordinates> nextMoves = getMovesInDirection(thisCoordinate, nextCoord, board);
-
-        return Stream.concat(nextMoves, Stream.of(thisCoordinate));
-    }
 }
