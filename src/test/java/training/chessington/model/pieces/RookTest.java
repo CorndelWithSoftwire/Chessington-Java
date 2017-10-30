@@ -1,5 +1,6 @@
 package training.chessington.model.pieces;
 
+import org.junit.Before;
 import org.junit.Test;
 import training.chessington.model.Board;
 import training.chessington.model.Coordinates;
@@ -12,11 +13,18 @@ import static training.chessington.model.pieces.PieceAssert.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class RookTest {
+
+    private Board board;
+    private Rook rook = new Rook(PlayerColour.WHITE);
+
+    @Before
+    public void setup() {
+        board = Board.empty();
+    }
+
     @Test
     public void rookCanMoveHorizontally() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -38,8 +46,6 @@ public class RookTest {
     @Test
     public void rookCannotMoveToOwnSquare() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -53,8 +59,6 @@ public class RookTest {
     @Test
     public void rookCanMoveVertically() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -76,8 +80,6 @@ public class RookTest {
     @Test
     public void rookCanCaptureOpposingPieceHorizontally() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -95,8 +97,6 @@ public class RookTest {
     @Test
     public void rookCanCaptureOpposingPieceVertically() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -114,8 +114,6 @@ public class RookTest {
     @Test
     public void rookIsBlockedByFriendlyPieceHorizontally() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -137,8 +135,6 @@ public class RookTest {
     @Test
     public void rookIsBlockedByFriendlyPieceVertically() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -160,8 +156,6 @@ public class RookTest {
     @Test
     public void rookCannotPassThroughOpposingPieceHorizontally() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
@@ -182,8 +176,6 @@ public class RookTest {
     @Test
     public void rookCannotPassThroughOpposingPieceVertically() {
         // Arrange
-        Board board = Board.empty();
-        Piece rook = new Rook(PlayerColour.WHITE);
         Coordinates coords = new Coordinates(3, 4);
         board.placePiece(coords, rook);
 
