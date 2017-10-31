@@ -8,7 +8,9 @@ import java.util.function.BiConsumer;
 
 public class Board implements Cloneable {
 
-    private Piece[][] board = new Piece[8][8];
+    public static final int BOARD_SIZE = 8;
+
+    private Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
 
     private Board() {
     }
@@ -18,7 +20,7 @@ public class Board implements Cloneable {
         board.setBackRow(0, PlayerColour.BLACK);
         board.setBackRow(7, PlayerColour.WHITE);
 
-        for (int col = 0; col < 8; col++) {
+        for (int col = 0; col < BOARD_SIZE; col++) {
             board.board[1][col] = new Pawn(PlayerColour.BLACK);
             board.board[6][col] = new Pawn(PlayerColour.WHITE);
         }
@@ -46,7 +48,8 @@ public class Board implements Cloneable {
     }
 
     public boolean inRange(Coordinates coordinates) {
-        return coordinates.getCol() < 8 && coordinates.getCol() >= 0 && coordinates.getRow() < 8 && coordinates.getRow() >= 0;
+        return coordinates.getCol() < BOARD_SIZE && coordinates.getCol() >= 0
+                && coordinates.getRow() < BOARD_SIZE && coordinates.getRow() >= 0;
     }
 
     public boolean hasPieceOfColourAt(Coordinates coords, PlayerColour colour) {
@@ -75,11 +78,11 @@ public class Board implements Cloneable {
     }
 
     public Coordinates getKingPositionForPlayer(PlayerColour colour) {
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
                 Piece piece = board[row][col];
                 if (piece != null && piece.getColour() == colour && piece.getType() == Piece.PieceType.KING) {
-                   return new Coordinates(row, col);
+                    return new Coordinates(row, col);
                 }
             }
         }
@@ -94,8 +97,8 @@ public class Board implements Cloneable {
     }
 
     private void forEachPiece(BiConsumer<Coordinates, Piece> function) {
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
                 Piece piece = board[row][col];
                 if (piece != null) {
                     function.accept(new Coordinates(row, col), piece);

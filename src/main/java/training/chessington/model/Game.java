@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Game {
-    public static final int SIZE = 8;
     private final Board board;
 
     private PlayerColour currentPlayer = PlayerColour.WHITE;
@@ -67,6 +66,7 @@ public class Game {
         if (isInCheck(currentPlayer, board)) {
             throw new InvalidMoveException(currentPlayer + " cannot end their move in check!");
         }
+
         currentPlayer = currentPlayer.getOpposite();
     }
 
@@ -79,11 +79,12 @@ public class Game {
     }
 
     private static boolean isInCheck(PlayerColour player, Board board) {
-        List<Coordinates> otherPlayerPositions = board.getAllPiecePositionsForPlayer(player.getOpposite());
         Coordinates playerKingPosition = board.getKingPositionForPlayer(player);
+        List<Coordinates> otherPlayerPositions = board.getAllPiecePositionsForPlayer(player.getOpposite());
 
-        for (Coordinates piecePosition : otherPlayerPositions) {
-            if (board.get(piecePosition).getAllowedMoves(piecePosition, board).contains(new Move(piecePosition, playerKingPosition))) {
+        for (Coordinates opponentPiecePosition : otherPlayerPositions) {
+            Piece opponentPiece = board.get(opponentPiecePosition);
+            if (opponentPiece.getAllowedMoves(opponentPiecePosition, board).contains(new Move(opponentPiecePosition, playerKingPosition))) {
                 return true;
             }
         }

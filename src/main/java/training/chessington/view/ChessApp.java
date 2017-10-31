@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import training.chessington.model.Board;
 import training.chessington.model.Game;
 import training.chessington.model.InvalidMoveException;
 import training.chessington.model.Move;
@@ -28,13 +29,13 @@ public class ChessApp extends Parent {
         getChildren().add(grid);
     }
 
-    private Square[][] squares = new Square[Game.SIZE][Game.SIZE];
+    private Square[][] squares = new Square[Board.BOARD_SIZE][Board.BOARD_SIZE];
 
     private void buildDisplayBoard() {
         grid = new GridPane();
 
-        for (int row = 0; row < Game.SIZE; row++) {
-            for (int col = 0; col < Game.SIZE; col++) {
+        for (int row = 0; row < Board.BOARD_SIZE; row++) {
+            for (int col = 0; col < Board.BOARD_SIZE; col++) {
                 Square square = new Square(row, col);
                 square.setOnMouseClicked(e -> onSquareClicked(square));
                 grid.add(square, col, row);
@@ -87,16 +88,16 @@ public class ChessApp extends Parent {
     }
 
     private void redrawPieces() {
-        for (int row = 0; row < Game.SIZE; row++) {
-            for (int col = 0; col < Game.SIZE; col++) {
+        for (int row = 0; row < Board.BOARD_SIZE; row++) {
+            for (int col = 0; col < Board.BOARD_SIZE; col++) {
                 squares[row][col].setPiece(game.pieceAt(row, col));
             }
         }
     }
 
     private void resetHighlighting() {
-        for (int row = 0; row < Game.SIZE; row++) {
-            for (int col = 0; col < Game.SIZE; col++) {
+        for (int row = 0; row < Board.BOARD_SIZE; row++) {
+            for (int col = 0; col < Board.BOARD_SIZE; col++) {
                 squares[row][col].resetHighlighting();
             }
         }

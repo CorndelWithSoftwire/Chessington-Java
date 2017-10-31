@@ -47,22 +47,6 @@ public abstract class AbstractPiece implements Piece {
         return board.hasPieceOfColourAt(target, colour.getOpposite());
     }
 
-    private Stream<Coordinates> getValidTargetsInDirection(Coordinates origin, Function<Coordinates, Coordinates> nextCoord, Board board) {
-        Coordinates thisCoordinate = nextCoord.apply(origin);
-
-        if (!board.inRange(thisCoordinate) || containsFriendlyPiece(thisCoordinate, board)) {
-            return Stream.empty();
-        }
-
-        if (containsOpposingPiece(thisCoordinate, board)) {
-            return Stream.of(thisCoordinate);
-        }
-
-        Stream<Coordinates> nextMoves = getValidTargetsInDirection(thisCoordinate, nextCoord, board);
-
-        return Stream.concat(nextMoves, Stream.of(thisCoordinate));
-    }
-
     protected Stream<Move> getLateralMoves(Coordinates from, Board board) {
         Stream<Coordinates> leftMoves = getValidTargetsInDirection(from, c -> c.plus(0, -1), board);
         Stream<Coordinates> rightMoves = getValidTargetsInDirection(from, c -> c.plus(0, 1), board);
@@ -79,5 +63,21 @@ public abstract class AbstractPiece implements Piece {
         Stream<Coordinates> downRightMoves = getValidTargetsInDirection(from, c -> c.plus(1, 1), board);
 
         return Stream.of(upLeftMoves, upRightMoves, downLeftMoves, downRightMoves).flatMap(s -> s).map(c -> new Move(from, c));
+    }
+
+    private Stream<Coordinates> getValidTargetsInDirection(Coordinates origin, Function<Coordinates, Coordinates> nextCoord, Board board) {
+        Coordinates thisCoordinate = nextCoord.apply(origin);
+
+        if (!board.inRange(thisCoordinate) || containsFriendlyPiece(thisCoordinate, board)) {
+            return Stream.empty();
+        }
+
+        if (containsOpposingPiece(thisCoordinate, board)) {
+            return Stream.of(thisCoordinate);
+        }
+
+        Stream<Coordinates> nextMoves = getValidTargetsInDirection(thisCoordinate, nextCoord, board);
+
+        return Stream.concat(nextMoves, Stream.of(thisCoordinate));
     }
 }
