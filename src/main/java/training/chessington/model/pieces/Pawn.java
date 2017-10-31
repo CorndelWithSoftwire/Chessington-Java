@@ -16,13 +16,29 @@ public class Pawn extends AbstractPiece {
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> moves = new ArrayList<>();
-        if (colour.equals(PlayerColour.BLACK)) {
-            Coordinates blackTo = new Coordinates(from.getRow()+1, from.getCol());
-            moves.add(new Move(from, blackTo));
-        } else {
-            Coordinates whiteTo = new Coordinates(from.getRow()-1, from.getCol());
-            moves.add(new Move(from, whiteTo));
+        switch (this.colour) {
+            case BLACK: 
+                if (from.getRow() == 1) {
+                    Coordinates blackMove1 = new Coordinates(from.getRow()+1, from.getCol());
+                    Coordinates blackMove2 = new Coordinates(from.getRow()+2, from.getCol());
+                    moves.add(new Move(from, blackMove1));
+                    moves.add(new Move(from, blackMove2));
+                } else {
+                    Coordinates blackMove1 = new Coordinates(from.getRow()+1, from.getCol());
+                    moves.add(new Move(from, blackMove1));
+                }
+            case WHITE: {
+                if (from.getRow() == 6) {
+                    Coordinates whiteMove1 = new Coordinates(from.getRow()-1, from.getCol());
+                    Coordinates whiteMove2 = new Coordinates(from.getRow()-2, from.getCol());
+                    moves.add(new Move(from, whiteMove1));
+                    moves.add(new Move(from, whiteMove2));
+                } else {
+                    Coordinates whiteMove1 = new Coordinates(from.getRow()-1, from.getCol());
+                    moves.add(new Move(from, whiteMove1));
+                }
+            }
         }
-        return moves;
+        return moves; 
     }
 }
