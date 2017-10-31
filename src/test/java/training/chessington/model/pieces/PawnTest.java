@@ -180,4 +180,106 @@ public class PawnTest {
         // Assert
         assertThat(moves).isEmpty();
     }
+
+    @Test
+    public void whitePawnsCanCaptureDiagonally() {
+        // Arrange
+        Board board = Board.empty();
+        Piece pawn = new Pawn(PlayerColour.WHITE);
+        Piece enemyPiece = new Rook(PlayerColour.BLACK);
+        Coordinates pawnCoords = new Coordinates(4, 4);
+        board.placePiece(pawnCoords, pawn);
+
+        Coordinates enemyCoords = pawnCoords.plus(-1, 1);
+        board.placePiece(enemyCoords, enemyPiece);
+
+        // Act
+        List<Move> moves = pawn.getAllowedMoves(pawnCoords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(pawnCoords, enemyCoords));
+    }
+
+    @Test
+    public void blackPawnsCanCaptureDiagonally() {
+        // Arrange
+        Board board = Board.empty();
+        Piece pawn = new Pawn(PlayerColour.BLACK);
+        Piece enemyPiece = new Rook(PlayerColour.WHITE);
+        Coordinates pawnCoords = new Coordinates(3, 4);
+        board.placePiece(pawnCoords, pawn);
+
+        Coordinates enemyCoords = pawnCoords.plus(1, 1);
+        board.placePiece(enemyCoords, enemyPiece);
+
+        // Act
+        List<Move> moves = pawn.getAllowedMoves(pawnCoords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(pawnCoords, enemyCoords));
+    }
+
+    @Test
+    public void pawnsCannotMoveDiagonallyOffBoard() {
+        // Arrange
+        Board board = Board.empty();
+
+        Piece blackPawn = new Pawn(PlayerColour.BLACK);
+        Coordinates blackCoords = new Coordinates(3, 0);
+        board.placePiece(blackCoords, blackPawn);
+
+        Piece whitePawn = new Pawn(PlayerColour.WHITE);
+        Coordinates whiteCoords = new Coordinates(4, 0);
+        board.placePiece(whiteCoords, whitePawn);
+
+        // Act
+        List<Move> blackMoves = blackPawn.getAllowedMoves(blackCoords, board);
+        List<Move> whiteMoves = whitePawn.getAllowedMoves(whiteCoords, board);
+
+        // Assert
+        assertThat(blackMoves).isEmpty();
+        assertThat(whiteMoves).isEmpty();
+    }
+
+    @Test
+    public void whitePawnsCannotMoveDiagonallyNotToCapture() {
+        // Arrange
+        Board board = Board.empty();
+        Piece pawn = new Pawn(PlayerColour.WHITE);
+        Piece friendlyPiece = new Rook(PlayerColour.WHITE);
+        Coordinates pawnCoords = new Coordinates(4, 4);
+        board.placePiece(pawnCoords, pawn);
+
+        Coordinates rookCoords = pawnCoords.plus(-1, 1);
+        board.placePiece(rookCoords, friendlyPiece);
+
+        // Act
+        List<Move> moves = pawn.getAllowedMoves(pawnCoords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(pawnCoords, rookCoords));
+        Coordinates otherDiagonal = pawnCoords.plus(-1, -1);
+        assertThat(moves).doesNotContain(new Move(pawnCoords, otherDiagonal));
+    }
+
+    @Test
+    public void blackPawnsCannotMoveDiagonallyNotToCapture() {
+        // Arrange
+        Board board = Board.empty();
+        Piece pawn = new Pawn(PlayerColour.BLACK);
+        Piece friendlyPiece = new Rook(PlayerColour.BLACK);
+        Coordinates pawnCoords = new Coordinates(3, 4);
+        board.placePiece(pawnCoords, pawn);
+
+        Coordinates rookCoords = pawnCoords.plus(1, 1);
+        board.placePiece(rookCoords, friendlyPiece);
+
+        // Act
+        List<Move> moves = pawn.getAllowedMoves(pawnCoords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(pawnCoords, rookCoords));
+        Coordinates otherDiagonal = pawnCoords.plus(1, -1);
+        assertThat(moves).doesNotContain(new Move(pawnCoords, otherDiagonal));
+    }
 }
