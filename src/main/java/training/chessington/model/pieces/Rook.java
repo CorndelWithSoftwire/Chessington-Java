@@ -17,4 +17,9 @@ public class Rook extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         return getLateralMoves(from, board).collect(Collectors.toList());
     }
+
+    @Override
+    public Rook duplicate() {
+        return new Rook(colour);
+    }
 }

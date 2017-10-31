@@ -18,4 +18,6 @@ public interface Piece {
     List<Move> getAllowedMoves(Coordinates from, Board board);
 
     void setMoved();
+
+    Piece duplicate();
 }

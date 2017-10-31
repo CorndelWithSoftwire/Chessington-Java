@@ -5,7 +5,6 @@ import training.chessington.model.Coordinates;
 import training.chessington.model.Move;
 import training.chessington.model.PlayerColour;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,5 +34,10 @@ public class Knight extends AbstractPiece {
                 from.plus(1, -2),
                 from.plus(-1, -2)
         );
+    }
+
+    @Override
+    public Knight duplicate() {
+        return new Knight(colour);
     }
 }

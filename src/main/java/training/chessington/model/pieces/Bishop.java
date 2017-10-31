@@ -17,4 +17,9 @@ public class Bishop extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         return getDiagonalMoves(from, board).collect(Collectors.toList());
     }
+
+    @Override
+    public Bishop duplicate() {
+        return new Bishop(colour);
+    }
 }

@@ -39,4 +39,9 @@ public class King extends AbstractPiece {
 
         return moves;
     }
+
+    @Override
+    public King duplicate() {
+        return new King(colour);
+    }
 }

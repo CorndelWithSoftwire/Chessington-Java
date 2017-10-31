@@ -18,4 +18,9 @@ public class Queen extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         return Stream.concat(getLateralMoves(from, board), getDiagonalMoves(from, board)).collect(Collectors.toList());
     }
+
+    @Override
+    public Queen duplicate() {
+        return new Queen(colour);
+    }
 }

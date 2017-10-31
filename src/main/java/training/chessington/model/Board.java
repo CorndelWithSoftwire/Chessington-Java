@@ -2,7 +2,11 @@ package training.chessington.model;
 
 import training.chessington.model.pieces.*;
 
-public class Board {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
+
+public class Board implements Cloneable {
 
     private Piece[][] board = new Piece[8][8];
 
@@ -58,5 +62,45 @@ public class Board {
 
     public void placePiece(Coordinates coords, Piece piece) {
         board[coords.getRow()][coords.getCol()] = piece;
+    }
+
+    public List<Coordinates> getAllPiecePositionsForPlayer(PlayerColour colour) {
+        List<Coordinates> positions = new ArrayList<>();
+        forEachPiece((coords, piece) -> {
+            if (piece.getColour() == colour) {
+                positions.add(coords);
+            }
+        });
+        return positions;
+    }
+
+    public Coordinates getKingPositionForPlayer(PlayerColour colour) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board[row][col];
+                if (piece != null && piece.getColour() == colour && piece.getType() == Piece.PieceType.KING) {
+                   return new Coordinates(row, col);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Board clone() {
+        Board other = new Board();
+        forEachPiece(((coords, piece) -> other.placePiece(coords, piece.duplicate())));
+        return other;
+    }
+
+    private void forEachPiece(BiConsumer<Coordinates, Piece> function) {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board[row][col];
+                if (piece != null) {
+                    function.accept(new Coordinates(row, col), piece);
+                }
+            }
+        }
     }
 }

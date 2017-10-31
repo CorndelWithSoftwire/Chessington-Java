@@ -57,4 +57,9 @@ public class Pawn extends AbstractPiece {
     private boolean squareOccupied(Coordinates target, Board board) {
         return board.get(target) != null;
     }
+
+    @Override
+    public Piece duplicate() {
+        return new Pawn(colour);
+    }
 }
