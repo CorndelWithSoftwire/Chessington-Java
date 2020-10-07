@@ -4,3 +4,10 @@
 target/
 
 dependency-reduced-pom.xml
+
+# VS Code
+.classpath
+.factorypath
+.project
+.settings/
+.vscode/
