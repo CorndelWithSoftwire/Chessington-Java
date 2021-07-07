@@ -27,7 +27,6 @@ public class Pawn extends AbstractPiece {
         capture(from, -1, colourInt, board, diagonalMoves);
         moves.removeIf(n->outBoundary(n.getTo()));
         moves.removeIf(move->blocked(move, board));
-        System.out.println(moves);
         moves.addAll(diagonalMoves);
         return moves;
     }
