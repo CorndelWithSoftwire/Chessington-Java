@@ -24,6 +24,12 @@ public class Pawn extends AbstractPiece {
             direction = -1;
         }
 
+        // check if at end of boundary
+        boolean atEndOfBoard = boundaryCheck(from.getRow());
+        if (atEndOfBoard) {
+            return allowableMoves;
+        }
+
         // check for obstruction
         boolean canMove = obstruction(from, board, direction);
         if (!canMove) {
@@ -71,6 +77,13 @@ public class Pawn extends AbstractPiece {
         Piece pieceInFront = board.get(coordsPieceInFront);
 
         if (pieceInFront == null) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean boundaryCheck(int fromRow) {
+        if (fromRow == 0 | fromRow == 7) {
             return true;
         }
         return false;
