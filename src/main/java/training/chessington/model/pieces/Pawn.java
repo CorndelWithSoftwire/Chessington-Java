@@ -34,7 +34,7 @@ public class Pawn extends AbstractPiece {
         if (pieceInfrontExists) { return allowableMoves; }
 
 
-        //  ########     standard move move place forward
+        //  ########     standard move one place forward
 
         // make the new coordinate object
         Coordinates to = from.plus(direction, 0);
@@ -44,33 +44,33 @@ public class Pawn extends AbstractPiece {
         //  ########      end of standard move one place forward
 
         // check if it can move two spaces
-        boolean itMoved = hasItMovedAtAll(from.getRow(), direction);
-        if (!itMoved) {
-            to = from.plus(direction * 2, 0);
-            // check if 2 squares away has a piece, only add to list of moves if loc is null
-            if (board.get(to) == null) {
-                allowableMoves.add(new Move(from, to));
-            }
-        }
+        hasItMovedAtAll(from, direction, allowableMoves, board);
 
         return allowableMoves;
     }
 
-    public boolean hasItMovedAtAll(int fromRow, int direction) {
+    public void hasItMovedAtAll(Coordinates from, int direction, List<Move> initAllowableMoves, Board board) {
+
         int initRowBlack = 1;
         int initRowWhite = 6;
+        int fromRow = from.getRow();
 
         // quick exit
-        // black and row isnt 1  OR white and row isnt 6 then it moved
+        // black and row isnt 1  OR white and row isnt 6 then it has moved before
         if ( (direction == 1 && fromRow != initRowBlack) | (direction == -1 && fromRow != initRowWhite) ) {
-            return true;
+            return;
         }
-        return false;
+
+        Coordinates to = from.plus(direction * 2, 0);
+        // check if 2 squares away has a piece, only add to list of moves if loc is null
+        if (board.get(to) == null) { initAllowableMoves.add(new Move(from, to)); }
+
+
     }
 
     private boolean pieceInfront(Coordinates from, Board board, int direction) {
-        // if black and one space below is occupied then cannot move
-        // if white and one space above is occupied then cannot move
+        // if black and one space below is occupied then cannot move forward
+        // if white and one space above is occupied then cannot move forward
         int fromRow = from.getRow();
         int fromCol = from.getCol();
 
@@ -78,9 +78,7 @@ public class Pawn extends AbstractPiece {
 
         Piece pieceInFront = board.get(coordsPieceInFront);
 
-        if (pieceInFront == null) {
-            return false;
-        }
+        if (pieceInFront == null) { return false; }
         return true;
     }
 
