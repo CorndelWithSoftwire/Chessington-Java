@@ -8,30 +8,45 @@ import training.chessington.model.PlayerColour;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Pawn extends AbstractPiece {
+
     public Pawn(PlayerColour colour) {
         super(Piece.PieceType.PAWN, colour);
     }
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-        // to make a list of move objects
-        List<Move> allowMoves = new ArrayList<>();
+        List<Move> allowableMoves = new ArrayList<>();
+        int direction = 1;
+        if(this.getColour() == PlayerColour.WHITE) {
+            direction = -1;
+        }
+        boolean itMoved = hasItMoved(from.getRow(), direction);
+        // make the new coordinate object
+        Coordinates to = from.plus(direction, 0);
+        // add move object to list of move objects
+        allowableMoves.add(new Move(from, to));
 
-        // increment counter direction
-        int increment = 1;  // default is black
-
-        // check colour of pawn and change direction
-        if (this.getColour() == PlayerColour.WHITE) {
-            increment = -1 ;
+        if (!itMoved) {
+            to = from.plus(direction * 2, 0);
+            allowableMoves.add(new Move(from, to));
         }
 
-        // make the new coordinate object
-        Coordinates to = from.plus(increment, 0);
-
-        // add move object to list of move objects
-        allowMoves.add(new Move(from, to));
-
-        return allowMoves;
+        return allowableMoves;
     }
+
+    public boolean hasItMoved(int fromRow, int direction) {
+        int initRowBlack = 1;
+        int initRowWhite = 6;
+
+        // quick exit
+        // black and row isnt 1  OR white and row isnt 6 then it moved
+        if ( (direction == 1 && fromRow != initRowBlack) | (direction == -1 && fromRow != initRowWhite) ) {
+            return true;
+        }
+        return false;
+
+    }
+
 }
