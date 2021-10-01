@@ -37,7 +37,7 @@ public class Knight extends AbstractPiece {
             if (targetRow >= 0 && targetRow <= 7 && targetCol >= 0 && targetCol <= 7) {
                 Coordinates to = new Coordinates(targetRow, targetCol);
                 Piece targetPiece = board.get(to);
-                if (targetPiece == null | (targetPiece != null && targetPiece.getColour()!= this.colour) ) {
+                if (targetPiece == null || targetPiece.getColour()!= this.colour ) {
                     initAllowableMoves.add(new Move(from, to));
                 }
             }
