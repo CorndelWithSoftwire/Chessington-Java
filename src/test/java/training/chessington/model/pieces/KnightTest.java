@@ -54,4 +54,40 @@ public class KnightTest {
         // Assert
         assertThat(moves).doesNotContain(new Move(coords, allyPawnCoords));
     }
+
+    @Test
+    public void knightCannotMoveOffBoardLeft() {
+        // Arrange
+        Board board = Board.empty();
+        Piece knight = new Knight(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(5, 0);
+        board.placePiece(coords, knight);
+
+        // Act
+        List<Move> moves = knight.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1, -2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1, -2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2, -1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(2, -1)));
+    }
+
+    @Test
+    public void knightCannotMoveOffBoardRight() {
+        // Arrange
+        Board board = Board.empty();
+        Piece knight = new Knight(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(5, 7);
+        board.placePiece(coords, knight);
+
+        // Act
+        List<Move> moves = knight.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1, 2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1, 2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2, 1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(2, 1)));
+    }
 }
