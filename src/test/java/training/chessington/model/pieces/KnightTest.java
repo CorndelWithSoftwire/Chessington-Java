@@ -35,4 +35,23 @@ public class KnightTest {
         assertThat(moves).contains(new Move(coords, coords.plus(2, -1)));
         assertThat(moves).contains(new Move(coords, coords.plus(2, 1)));
     }
+
+    @Test
+    public void knightCannotAttackAlly() {
+        // Arrange
+        Board board = Board.empty();
+        Piece knight = new Knight(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4, 4);
+        board.placePiece(coords, knight);
+
+        Piece allyPawn = new Pawn(PlayerColour.WHITE);
+        Coordinates allyPawnCoords = coords.plus(-1, -2);
+        board.placePiece(allyPawnCoords, allyPawn);
+
+        // Act
+        List<Move> moves = knight.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, allyPawnCoords));
+    }
 }

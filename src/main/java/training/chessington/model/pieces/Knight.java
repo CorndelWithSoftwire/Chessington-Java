@@ -26,29 +26,23 @@ public class Knight extends AbstractPiece {
         return allowableMoves;
     }
 
-    private void getCornersOfRectangle(Coordinates from, Board board,List<Move> initAllowableMoves, int rowInc, int colInc) {
+    private void getCornersOfRectangle(Coordinates from, Board board,List<Move> initAllowableMoves, int rowIncrement, int colIncrement) {
         int fromRow = from.getRow();
         int fromCol = from.getCol();
 
-        int[] rowArray = {fromRow - rowInc, fromRow + rowInc};
-        int[] colArray = {fromCol - colInc, fromCol + colInc};
+        int[] rowArray = {fromRow - rowIncrement, fromRow + rowIncrement};
+        int[] colArray = {fromCol - colIncrement, fromCol + colIncrement};
 
         for(int r: rowArray) {
-
             // quick exit to next item
-            if (r < 0 | r > 7) {
-                continue;
-            }
-
+            if (r < 0 | r > 7) { continue; }
             for (int c: colArray) {
                 // quick exit to next item
-                if (c < 0 | c > 7) {
-                    continue;
-                }
-
+                if (c < 0 | c > 7) { continue; }
                 Coordinates to = new Coordinates(r, c);
+                // if target loc does not contain ally then add to list of allowable moves
+                if (board.get(to) != null && board.get(to).getColour() == this.colour) { continue; }
                 initAllowableMoves.add(new Move(from, to));
-
             }
         }
     }
