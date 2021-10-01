@@ -85,4 +85,22 @@ public class RookTest {
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -3)));
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -4)));
     }
+
+    @Test
+    public void rookCannotMoveOffBoard() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4, 4);
+        board.placePiece(coords, rook);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -5)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, 4)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-5, 0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(4, 0)));
+    }
 }
