@@ -6,7 +6,6 @@ import training.chessington.model.Move;
 import training.chessington.model.PlayerColour;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Knight extends AbstractPiece {
@@ -18,31 +17,29 @@ public class Knight extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> allowableMoves = new ArrayList<>();
 
-        // laying rectangle
-        getCornersOfRectangle(from, board, allowableMoves, 1, 2);
-        // standing rectangle
-        getCornersOfRectangle(from, board, allowableMoves, 2, 1);
+        CornersOfRectangles(from, board, allowableMoves);
 
         return allowableMoves;
     }
 
-    private void getCornersOfRectangle(Coordinates from, Board board,List<Move> initAllowableMoves, int rowIncrement, int colIncrement) {
+    private void CornersOfRectangles(Coordinates from, Board board, List<Move> initAllowableMoves) {
         int fromRow = from.getRow();
         int fromCol = from.getCol();
 
-        int[] rowArray = {fromRow - rowIncrement, fromRow + rowIncrement};
-        int[] colArray = {fromCol - colIncrement, fromCol + colIncrement};
+        // possible row and col diff pairs for knights
+        int[] rowArray = {-2, -2, 2, 2, -1, -1, 1, 1};
+        int[] colArray = {-1, 1, -1, 1, -2, 2, -2, 2};
 
-        for(int r: rowArray) {
-            // quick exit to next item
-            if (r < 0 | r > 7) { continue; }
-            for (int c: colArray) {
-                // quick exit to next item
-                if (c < 0 | c > 7) { continue; }
-                Coordinates to = new Coordinates(r, c);
-                // if target loc does not contain ally then add to list of allowable moves
-                if (board.get(to) != null && board.get(to).getColour() == this.colour) { continue; }
-                initAllowableMoves.add(new Move(from, to));
+        for (int index = 0; index < 8; index++) {
+            int targetRow = fromRow + rowArray[index];
+            int targetCol = fromCol + colArray[index];
+
+            if (targetRow >= 0 && targetRow <= 7 && targetCol >= 0 && targetCol <= 7) {
+                Coordinates to = new Coordinates(targetRow, targetCol);
+                Piece targetPiece = board.get(to);
+                if (targetPiece == null | (targetPiece != null && targetPiece.getColour()!= this.colour) ) {
+                    initAllowableMoves.add(new Move(from, to));
+                }
             }
         }
     }
