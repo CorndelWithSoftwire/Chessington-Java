@@ -11,26 +11,26 @@ import java.util.List;
 
 
 public class Pawn extends AbstractPiece {
-
+    private int direction;
     public Pawn(PlayerColour colour) {
         super(Piece.PieceType.PAWN, colour);
+        this.direction = (this.getColour() == PlayerColour.WHITE ? -1: 1);
     }
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
 
         List<Move> allowableMoves = new ArrayList<>();
-        int direction = (this.getColour() == PlayerColour.WHITE ? -1: 1);
 
         // check if at end of boundary TOP and BOTTOM
         boolean atEndOfBoard = boundaryCheck(from.getRow());
         if (atEndOfBoard) { return allowableMoves; }
 
         // check for nearby enemies to capture
-        captureNearbyEnemy(from, board, direction,allowableMoves);
+        captureNearbyEnemy(from, board, allowableMoves);
 
         // check for obstruction directly in front
-        boolean pieceInfrontExists = pieceInfront(from, board, direction);
+        boolean pieceInfrontExists = pieceInfront(from, board);
         if (pieceInfrontExists) { return allowableMoves; }
 
 
@@ -44,12 +44,12 @@ public class Pawn extends AbstractPiece {
         //  ########      end of standard move one place forward
 
         // check if it can move two spaces
-        hasItMovedAtAll(from, direction, allowableMoves, board);
+        hasItMovedAtAll(from, allowableMoves, board);
 
         return allowableMoves;
     }
 
-    public void hasItMovedAtAll(Coordinates from, int direction, List<Move> initAllowableMoves, Board board) {
+    public void hasItMovedAtAll(Coordinates from, List<Move> initAllowableMoves, Board board) {
 
         int initRowBlack = 1;
         int initRowWhite = 6;
@@ -68,7 +68,7 @@ public class Pawn extends AbstractPiece {
 
     }
 
-    private boolean pieceInfront(Coordinates from, Board board, int direction) {
+    private boolean pieceInfront(Coordinates from, Board board) {
         // if black and one space below is occupied then cannot move forward
         // if white and one space above is occupied then cannot move forward
         int fromRow = from.getRow();
@@ -89,7 +89,7 @@ public class Pawn extends AbstractPiece {
         return false;
     }
 
-    private void captureNearbyEnemy(Coordinates from, Board board, int direction, List<Move> initAllowableMoves) {
+    private void captureNearbyEnemy(Coordinates from, Board board, List<Move> initAllowableMoves) {
         List<Coordinates> listOfCoords = new ArrayList<>();
 
         int fromRow = from.getRow();
