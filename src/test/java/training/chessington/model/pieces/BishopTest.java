@@ -31,4 +31,24 @@ public class BishopTest {
         assertThat(moves).contains(new Move(coords, coords.plus(1, -1)));
     }
 
+    @Test
+    public void bishopCanCaptureEnemyThatBlocksItsPath() {
+        // Arrange
+        Board board = Board.empty();
+        Piece bishop = new Bishop(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4, 4);
+        board.placePiece(coords, bishop);
+
+        Piece enemyPawn = new Pawn(PlayerColour.BLACK);
+        Coordinates enemyPawnCoords = coords.plus(-1, 1);
+        board.placePiece(enemyPawnCoords, enemyPawn);
+
+        // Act
+        List<Move> moves = bishop.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, enemyPawnCoords));
+
+    }
+
 }
