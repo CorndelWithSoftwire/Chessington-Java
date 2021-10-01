@@ -48,7 +48,57 @@ public class BishopTest {
 
         // Assert
         assertThat(moves).contains(new Move(coords, enemyPawnCoords));
+    }
 
+    @Test
+    public void bishopCannotCaptureAlly() {
+        // Arrange
+        Board board = Board.empty();
+        Piece bishop = new Bishop(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4, 4);
+        board.placePiece(coords, bishop);
+
+        Piece allyPawn = new Pawn(PlayerColour.WHITE);
+        Coordinates allyPawnCoords = coords.plus(-1, 1);
+        board.placePiece(allyPawnCoords, allyPawn);
+
+        // Act
+        List<Move> moves = bishop.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, allyPawnCoords));
+    }
+
+    @Test
+    public void bishopCannotMoveOffBoardLeft() {
+        // Arrange
+        Board board = Board.empty();
+        Piece bishop = new Bishop(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(5, 0);
+        board.placePiece(coords, bishop);
+
+        // Act
+        List<Move> moves = bishop.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1, -1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1, -1)));
+    }
+
+    @Test
+    public void bishopCannotMoveOffBoardRight() {
+        // Arrange
+        Board board = Board.empty();
+        Piece bishop = new Bishop(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(5, 7);
+        board.placePiece(coords, bishop);
+
+        // Act
+        List<Move> moves = bishop.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1, 1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1, 1)));
     }
 
 }
