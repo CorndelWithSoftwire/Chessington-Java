@@ -34,6 +34,12 @@ public class Rook extends AbstractPiece {
             Coordinates currentLookUpSquareCoords = new Coordinates(row, col);
             // quick exit
             if (board.get(currentLookUpSquareCoords) != null) {
+
+                // if an enemy then allow capture and add to list of allowable moves
+                if (board.get(currentLookUpSquareCoords).getColour() != this.colour) {
+                    initAllowableMoves.add(new Move(from, currentLookUpSquareCoords));
+                }
+
                 break;
             }
             initAllowableMoves.add(new Move(from, currentLookUpSquareCoords));
