@@ -63,4 +63,26 @@ public class RookTest {
         assertThat(moves).contains(new Move(coords, pawnRightCoords));
         assertThat(moves).contains(new Move(coords, pawnBottomCoords));
     }
+
+    @Test
+    public void rookIsBlockedByAlly() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4, 4);
+        board.placePiece(coords, rook);
+
+        Piece allyPawn = new Pawn(PlayerColour.WHITE);
+        Coordinates allyPawnCoords = new Coordinates(4,2);
+        board.placePiece(allyPawnCoords, allyPawn);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, coords.plus(0, -1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -3)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -4)));
+    }
 }
