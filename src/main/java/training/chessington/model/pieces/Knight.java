@@ -16,7 +16,6 @@ public class Knight extends AbstractPiece {
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> allowableMoves = new ArrayList<>();
-
         CornersOfRectangles(from, board, allowableMoves);
 
         return allowableMoves;

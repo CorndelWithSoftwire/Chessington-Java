@@ -19,7 +19,6 @@ public class Pawn extends AbstractPiece {
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-
         List<Move> allowableMoves = new ArrayList<>();
 
         // check if at end of boundary TOP and BOTTOM
@@ -78,15 +77,11 @@ public class Pawn extends AbstractPiece {
 
         Piece pieceInFront = board.get(coordsPieceInFront);
 
-        if (pieceInFront == null) { return false; }
-        return true;
+        return pieceInFront != null;
     }
 
     private boolean boundaryCheck(int fromRow) {
-        if (fromRow == 0 | fromRow == 7) {
-            return true;
-        }
-        return false;
+        return fromRow == 0 | fromRow == 7;
     }
 
     private void captureNearbyEnemy(Coordinates from, Board board, List<Move> initAllowableMoves) {

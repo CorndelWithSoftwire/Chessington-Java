@@ -15,18 +15,17 @@ public class Rook extends AbstractPiece {
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-
         List<Move> allowableMoves = new ArrayList<>();
         addAvailableSpaces(from, board, allowableMoves, 1, 0);   // down
         addAvailableSpaces(from, board, allowableMoves, -1, 0);   // up
         addAvailableSpaces(from, board, allowableMoves, 0, 1);   // right
         addAvailableSpaces(from, board, allowableMoves, 0, -1);   // left
 
-
         return allowableMoves;
     }
 
-    private void addAvailableSpaces(Coordinates from, Board board, List<Move> initAllowableMoves, int vertical, int horizontal) {
+    private void addAvailableSpaces(Coordinates from, Board board, List<Move> initAllowableMoves,
+                                    int vertical, int horizontal) {
         int row = from.getRow() + vertical;
         int col = from.getCol() + horizontal;
 
