@@ -8,6 +8,8 @@ import training.chessington.model.PlayerColour;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter.Black;
+
 public class Pawn extends AbstractPiece {
     public Pawn(PlayerColour colour) {
         super(Piece.PieceType.PAWN, colour);
@@ -18,26 +20,27 @@ public class Pawn extends AbstractPiece {
         List<Move> moves = new ArrayList<>();
         switch (this.colour) {
             case BLACK: 
-                if (from.getRow() == 1) {
-                    Coordinates blackMove1 = new Coordinates(from.getRow()+1, from.getCol());
-                    Coordinates blackMove2 = new Coordinates(from.getRow()+2, from.getCol());
-                    moves.add(new Move(from, blackMove1));
-                    moves.add(new Move(from, blackMove2));
-                } else {
-                    Coordinates blackMove1 = new Coordinates(from.getRow()+1, from.getCol());
-                    moves.add(new Move(from, blackMove1));
-                }
+                moves = getPawnMovesAsColor(this.colour, from, moves);
             case WHITE: {
-                if (from.getRow() == 6) {
-                    Coordinates whiteMove1 = new Coordinates(from.getRow()-1, from.getCol());
-                    Coordinates whiteMove2 = new Coordinates(from.getRow()-2, from.getCol());
-                    moves.add(new Move(from, whiteMove1));
-                    moves.add(new Move(from, whiteMove2));
-                } else {
-                    Coordinates whiteMove1 = new Coordinates(from.getRow()-1, from.getCol());
-                    moves.add(new Move(from, whiteMove1));
-                }
+                moves = getPawnMovesAsColor(this.colour, from, moves);
             }
+        }
+        return moves; 
+    }
+
+    public List<Move> getPawnMovesAsColor(PlayerColour colour, Coordinates from, List<Move> moves) {
+        int startingRow = this.colour == PlayerColour.BLACK ? 1 : 6;
+        Coordinates moveOneRow = this.colour == PlayerColour.BLACK ? new Coordinates(from.getRow()+1, from.getCol()) : new Coordinates(from.getRow()-1, from.getCol());
+        Coordinates moveTwoRows = this.colour == PlayerColour.BLACK ? new Coordinates(from.getRow()+2, from.getCol()) : new Coordinates(from.getRow()-2, from.getCol());
+
+        if (from.getRow() == startingRow) {
+            Coordinates blackMove1 = moveOneRow;
+            Coordinates blackMove2 = moveTwoRows;
+            moves.add(new Move(from, blackMove1));
+            moves.add(new Move(from, blackMove2));
+        } else {
+            Coordinates blackMove1 = new Coordinates(from.getRow()+1, from.getCol());
+            moves.add(new Move(from, blackMove1));
         }
         return moves; 
     }
