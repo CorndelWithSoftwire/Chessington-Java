@@ -48,10 +48,12 @@ public class Pawn extends AbstractPiece {
         if (from.getRow() == startingRow) {
             if (checkPawnCanMove(board, moveOneRow)) {
                 moves.add(new Move(from, moveOneRow));
+
+                if(checkPawnCanMove(board, moveTwoRows)) {
+                    moves.add(new Move(from, moveTwoRows));
+                }
             }
-            if (checkPawnCanMove(board, moveTwoRows)) {
-                moves.add(new Move(from, moveTwoRows));
-            }
+
         } else {
             if (checkPawnCanMove(board, moveOneRow)) {
                 moves.add(new Move(from, moveOneRow));
@@ -67,9 +69,9 @@ public class Pawn extends AbstractPiece {
     public boolean isEdgeRow(Coordinates from, PlayerColour colour) {
         switch(this.colour) {
             case WHITE:
-                return from.getRow() == 0 ? true : false;
+                return from.getRow() == 0;
             case BLACK:
-                return from.getRow() == 7 ? true : false;
+                return from.getRow() == 7;
             default:
                 return false;
         }
@@ -95,11 +97,7 @@ public class Pawn extends AbstractPiece {
 
     public boolean checkForEnemyPiece (Board board, Coordinates to, PlayerColour colour) {
         if(board.get(to) != null) {
-            if (board.get(to).getColour().equals(colour)) {
-                return false;
-            } else {
-                return true;
-            }
+            return !board.get(to).getColour().equals(colour);
         }
         return false;
     }
