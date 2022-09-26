@@ -18,30 +18,43 @@ public class Pawn extends AbstractPiece {
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> moves = new ArrayList<>();
-        switch (this.colour) {
-            case BLACK: 
-                moves = getPawnMovesAsColor(this.colour, from, moves);
-            case WHITE: {
-                moves = getPawnMovesAsColor(this.colour, from, moves);
+        moves = getPawnMovesAsColor(this.colour, from, moves, board);
+        return moves; 
+    }
+
+    public List<Move> getPawnMovesAsColor(PlayerColour colour, Coordinates from, List<Move> moves, Board board) {
+        int startingRow = this.colour == PlayerColour.BLACK ? 1 : 6;
+        Coordinates moveOneRow = this.colour == PlayerColour.BLACK ? new Coordinates(from.getRow()+1, from.getCol()) : new Coordinates(from.getRow()-1, from.getCol());
+        Coordinates moveTwoRows = this.colour == PlayerColour.BLACK ? new Coordinates(from.getRow()+2, from.getCol()) : new Coordinates(from.getRow()-2, from.getCol());
+        
+        if (isEdge(from, colour)) {
+            return moves;
+        }
+
+        if (from.getRow() == startingRow) {
+            if (checkPawnCanMove(board, moveOneRow)) {
+                moves.add(new Move(from, moveOneRow));
+            }
+            if (checkPawnCanMove(board, moveTwoRows)) {
+                moves.add(new Move(from, moveTwoRows));
+            }
+        } else {
+            if (checkPawnCanMove(board, moveOneRow)) {
+                moves.add(new Move(from, moveOneRow));
             }
         }
         return moves; 
     }
 
-    public List<Move> getPawnMovesAsColor(PlayerColour colour, Coordinates from, List<Move> moves) {
-        int startingRow = this.colour == PlayerColour.BLACK ? 1 : 6;
-        Coordinates moveOneRow = this.colour == PlayerColour.BLACK ? new Coordinates(from.getRow()+1, from.getCol()) : new Coordinates(from.getRow()-1, from.getCol());
-        Coordinates moveTwoRows = this.colour == PlayerColour.BLACK ? new Coordinates(from.getRow()+2, from.getCol()) : new Coordinates(from.getRow()-2, from.getCol());
+    public boolean checkPawnCanMove(Board board, Coordinates to) {
+        return board.get(to) == null ? true : false;
+    }
 
-        if (from.getRow() == startingRow) {
-            Coordinates blackMove1 = moveOneRow;
-            Coordinates blackMove2 = moveTwoRows;
-            moves.add(new Move(from, blackMove1));
-            moves.add(new Move(from, blackMove2));
+    public boolean isEdge(Coordinates from, PlayerColour colour) {
+        if (this.colour == PlayerColour.WHITE) {
+            return from.getRow() == 0 ? true : false;
         } else {
-            Coordinates blackMove1 = new Coordinates(from.getRow()+1, from.getCol());
-            moves.add(new Move(from, blackMove1));
+            return from.getRow() == 7 ? true : false;
         }
-        return moves; 
     }
 }
